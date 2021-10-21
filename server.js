@@ -22,11 +22,17 @@ app.use(loginRoute);
 const publishRoute = require("./routes/offer/publishRoute");
 app.use(publishRoute);
 
+const listOffers = require("./routes/offer/listOffers");
+app.use(listOffers);
+
 const deleteOfferRoute = require("./routes/offer/deleteOfferRoute");
 app.use(deleteOfferRoute);
 
 const modifyOfferRoute = require("./routes/offer/modifyOfferRoute");
 app.use(modifyOfferRoute);
+
+const offerDetailRoute = require("./routes/offer/offerDetailRoute");
+app.use(offerDetailRoute);
 
 app.all("*", (req, res) => {
   res.status(404).json("Page not found");

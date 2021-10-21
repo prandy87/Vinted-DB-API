@@ -6,6 +6,7 @@ const cloudinary = require("cloudinary").v2;
 const isAuthenticated = require("../../middleware/isAuthenticated");
 
 router.post("/offer/publish", isAuthenticated, async (req, res) => {
+  console.log(req.fields);
   try {
     const newOffer = new Offer({
       product_name: req.fields.title,
@@ -21,12 +22,15 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
 
       owner: req.user,
     });
-    let pictureToUpload = req.files.picture.path;
-
-    const loadedPicture = await cloudinary.uploader.upload(pictureToUpload, {
-      folder: `/Vinted/offers/${newOffer._id}`,
-    });
-    newOffer.product_image = loadedPicture.secure_url;
+    if (req.files.picture !== undefined) {
+      const loadedPicture = await cloudinary.uploader.upload(
+        req.files.picture.path,
+        {
+          folder: `/Vinted/offers/${newOffer._id}`,
+        }
+      );
+      newOffer.product_image = loadedPicture.secure_url;
+    }
 
     await newOffer.save();
 
