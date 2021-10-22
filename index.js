@@ -15,7 +15,7 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-mongoose.connect("mongodb://localhost:27017/Vinted");
+mongoose.connect(process.env.MONGODB_URI);
 
 app.get("/", (req, res) => {
   res.json("Welcome to this VINTED app style API 🚀");
