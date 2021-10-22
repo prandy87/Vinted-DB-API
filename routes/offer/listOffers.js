@@ -39,20 +39,29 @@ router.get("/offers", async (req, res) => {
   }
   console.log(sort);
 
+  let limit;
+  if (req.query.limit) {
+    limit = Number(req.query.limit);
+  } else {
+    limit = 5;
+  }
+
   try {
     if (!req.query.page) {
       const offers = await Offer.find(filters)
         .select("product_name product_price")
         .sort(sort)
-        .limit(4);
-      res.json(offers);
+        .limit(limit);
+      const count = await Offer.countDocuments(filters);
+      res.json({ offers: offers, count: count });
     } else {
       const offers = await Offer.find(filters)
         .select("product_name product_price")
-        .limit(4)
+        .limit(limit)
         .sort(sort)
-        .skip(Number((req.query.page - 1) * 4));
-      res.json(offers);
+        .skip(Number((req.query.page - 1) * limit));
+      const count = await Offer.countDocuments(filters);
+      res.json({ offers: offers, count: count });
     }
   } catch (error) {
     res.status(400).json({ error: error.message });
