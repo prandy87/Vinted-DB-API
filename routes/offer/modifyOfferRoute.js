@@ -13,12 +13,12 @@ router.put("/offer/update", isAuthenticated, async (req, res) => {
         req.fields._id,
         req.fields
       );
-      //let pictureToUpload = req.files.picture.path;
+      let pictureToUpload = req.files.picture.path;
 
-      //const loadedPicture = await cloudinary.uploader.upload(pictureToUpload, {
-      //   folder: `/Vinted/offers/${offerToUpdate._id}`,
-      // });
-      // offerToUpdate.product_image = loadedPicture.secure_url;
+      const loadedPicture = await cloudinary.uploader.upload(pictureToUpload, {
+        folder: `/Vinted/offers/${offerToUpdate._id}`,
+      });
+      offerToUpdate.product_image = loadedPicture.secure_url;
       await offerToUpdate.save();
       if (offerToUpdate) {
         res.status(200).json(offerToUpdate);
