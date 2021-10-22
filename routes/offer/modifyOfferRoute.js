@@ -8,23 +8,26 @@ const cloudinary = require("cloudinary").v2;
 router.put("/offer/update", isAuthenticated, async (req, res) => {
   try {
     console.log(req.fields);
-    if (req.fields || req.files.picture.path) {
-      const offerToUpdate = await Offer.findByIdAndUpdate(
-        req.fields._id,
-        req.fields
-      );
-      let pictureToUpload = req.files.picture.path;
 
-      const loadedPicture = await cloudinary.uploader.upload(pictureToUpload, {
-        folder: `/Vinted/offers/${offerToUpdate._id}`,
-      });
+    const offerToUpdate = await Offer.findByIdAndUpdate(
+      req.fields._id,
+      req.fields
+    );
+    if (req.files.picture !== undefined) {
+      const loadedPicture = await cloudinary.uploader.upload(
+        req.files.picture.path,
+        {
+          folder: `/Vinted/offers/${offerToUpdate._id}`,
+        }
+      );
       offerToUpdate.product_image = loadedPicture.secure_url;
-      await offerToUpdate.save();
-      if (offerToUpdate) {
-        res.status(200).json(offerToUpdate);
-      } else {
-        res.status(404).json("Offer not found");
-      }
+    }
+
+    await offerToUpdate.save();
+    if (offerToUpdate) {
+      res.status(200).json(offerToUpdate);
+    } else {
+      res.status(404).json("Offer not found");
     }
   } catch (error) {
     res.json({ message: error.message });
