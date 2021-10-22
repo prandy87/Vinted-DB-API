@@ -8,7 +8,7 @@ const cloudinary = require("cloudinary").v2;
 router.put("/offer/update", isAuthenticated, async (req, res) => {
   try {
     console.log(req.fields);
-    if (req.fields) {
+    if (req.fields || req.files.picture.path) {
       const offerToUpdate = await Offer.findByIdAndUpdate(
         req.fields._id,
         req.fields
