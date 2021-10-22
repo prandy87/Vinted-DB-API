@@ -17,6 +17,10 @@ cloudinary.config({
 });
 mongoose.connect("mongodb://localhost:27017/Vinted");
 
+app.get("/", (req, res) => {
+  res.json("Welcome to this VINTED app style API 🚀");
+});
+
 const signUpRoute = require("./routes/user/signUpRoute");
 app.use(signUpRoute);
 
@@ -41,6 +45,6 @@ app.use(offerDetailRoute);
 app.all("*", (req, res) => {
   res.status(404).json("Page not found");
 });
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log("VINTED server up and running.");
 });
