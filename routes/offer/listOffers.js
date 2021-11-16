@@ -49,14 +49,14 @@ router.get("/offers", async (req, res) => {
   try {
     if (!req.query.page) {
       const offers = await Offer.find(filters)
-        .select("product_name product_price")
+        //.select("product_name product_price")
         .sort(sort)
         .limit(limit);
       const count = await Offer.countDocuments(filters);
       res.json({ offers: offers, count: count });
     } else {
       const offers = await Offer.find(filters)
-        .select("product_name product_price")
+        //.select("product_name product_price")
         .limit(limit)
         .sort(sort)
         .skip(Number((req.query.page - 1) * limit));
