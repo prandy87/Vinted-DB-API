@@ -43,7 +43,7 @@ router.get("/offers", async (req, res) => {
   if (req.query.limit) {
     limit = Number(req.query.limit);
   } else {
-    limit = 5;
+    limit = 25;
   }
 
   try {
