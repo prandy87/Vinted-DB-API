@@ -49,6 +49,7 @@ router.get("/offers", async (req, res) => {
   try {
     if (!req.query.page) {
       const offers = await Offer.find(filters)
+        .populate("owner")
         //.select("product_name product_price")
         .sort(sort)
         .limit(limit);
@@ -56,6 +57,7 @@ router.get("/offers", async (req, res) => {
       res.json({ offers: offers, count: count });
     } else {
       const offers = await Offer.find(filters)
+        .populate("owner")
         //.select("product_name product_price")
         .limit(limit)
         .sort(sort)
